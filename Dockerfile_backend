@@ -1,0 +1,9 @@
+#USER
+
+FROM node:latest
+WORKDIR /app_backend
+COPY backend/ .
+RUN npm install
+ENTRYPOINT npm start
+ENV APPID 98a9964e4f08fd2a5bd96f9cc56e4209
+ENV NODE_OPTIONS=--openssl-legacy-provider
