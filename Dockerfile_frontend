@@ -6,4 +6,3 @@ COPY frontend/ .
 RUN npm install
 ENTRYPOINT npm start
 USER node
-#ENV NODE_OPTIONS=--openssl-legacy-provider
