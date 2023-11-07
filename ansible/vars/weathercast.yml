@@ -1,0 +1,7 @@
+
+backend:
+  endpoint:
+    FQDN: weathercast.dwolnicki.net
+
+ec2:
+  remote_dir: weather

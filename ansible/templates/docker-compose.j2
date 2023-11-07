@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  weatherapp_backend:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile_backend
+    ports:
+      - 9000:9000/tcp
+    environment:
+      - APPID=98a9964e4f08fd2a5bd96f9cc56e4209
+    volumes:
+      - app_backend_storage:/app_backend
+
+  weatherapp_frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_frontend
+    ports:
+      - 8000:8000/tcp
+    environment:
+      #- ENDPOINT=http://weatherapp_backend:9000/api
+      - NODE_OPTIONS=--openssl-legacy-provider
+      - ENDPOINT=http://{{ backend.endpoint.FQDN }}:9000/api
+    volumes:
+      - app_frontend_storage:/app_frontend
+
+volumes:
+  app_backend_storage:
+  app_frontend_storage:
