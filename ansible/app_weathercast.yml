@@ -1,3 +1,23 @@
+#Ansible playbook for deploying, undeploying and restarting the weathercast application
+
+#------------------- The following tags can be used -------------------
+
+#-t prepare_instance - install docker and docker compose on managed machine
+#-t deploy - deploy the application
+#-t restart - restart the application
+#-t rebuild - rebuild the application (enforce rebuilding docker images)
+#-t undeploy - undeploy the application
+
+#------------------- The following external variables can be provided during plabook execution  -------------------
+
+#-e e_user=value - define the username (system account) used during deployment (ec2-user - default value)
+#-e e_hosts=value - name the of host group defined in inventory (localhost - default value)
+#-e e_FQDN=value - under this FQDN application will be visible (the relevant DNS record poiting proper IP has to exist) (weathercast.dwolnicki.net - defaule value) 
+
+#EXAMPLES of usage
+
+
+
 ---
 - name: Prepare runtime environment
   remote_user: "{{ e_user | default('ec2-user') }}"
@@ -27,7 +47,7 @@
           enabled: yes      
 
       tags:
-        - prepare_ec2
+        - prepare_instance
         - never
 
 #  handlers:
@@ -82,7 +102,7 @@
             msg: "{{ reg_docker_compose_up }}"
 
       tags:
-        - deploy_on_ec2
+        - deploy
         - never 
 
     - block:
@@ -96,7 +116,7 @@
         - debug:
             msg: "{{ reg_docker_compose_restart }}"
       tags:
-        - restart_on_ec2
+        - restart
         - never
 
     - block:
@@ -110,7 +130,7 @@
             msg: "{{ reg_docker_compose_rebuild }}"
 
       tags:
-        - rebuild_on_ec2
+        - rebuild
         - never
 
     - block:
@@ -131,6 +151,6 @@
           state: absent
           
       tags:
-        - undeploy_from_ec2
+        - undeploy
         - never
 ...
