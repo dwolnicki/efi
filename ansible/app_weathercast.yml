@@ -102,6 +102,8 @@
           community.docker.docker_compose:
             project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
           register: reg_docker_compose_up
+          #notify:
+          #  - ACL
 
         - debug:
             msg: "{{ reg_docker_compose_up }}"
@@ -130,7 +132,9 @@
             project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
             build: true
           register: reg_docker_compose_rebuild
-          
+          #notify:
+          #  - ACL
+  
         - debug:
             msg: "{{ reg_docker_compose_rebuild }}"
 
@@ -158,4 +162,35 @@
       tags:
         - undeploy
         - never
+
+  handlers:
+    - name: Find backend volume mounpoint
+      shell: docker volume inspect weather_{{ backend.volname }} | jq -r .[].Mountpoint
+      register: reg_back_vol_mountpoint
+      listen: ACL
+
+    - name: Find frontend volume mounpoint
+      shell: docker volume inspect weather_{{ frontend.volname }} | jq -r .[].Mountpoint
+      register: reg_front_vol_mountpoint
+      listen: ACL
+
+    - name: Set ACL
+      ansible.posix.acl:
+        path: "{{ item[1] }}"
+        entry: "{{ item[0] }}:{{ ansible_user_id }}:rwx"
+        recursive: yes
+        state: present
+      with_nested:
+        - [ 'user', 'd:user']
+        - [ '{{ reg_back_vol_mountpoint.stdout }}', '{{ reg_front_vol_mountpoint.stdout }}' ]
+      become: yes
+      listen: ACL
+
+    - name: Set ACL
+      ansible.posix.acl:
+        path: /var/lib/docker/
+        entry: "user:{{ ansible_user_id }}:--x"
+        state: present
+      listen: ACL
+      
 ...
