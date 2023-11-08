@@ -1,8 +1,9 @@
 ---
-- name: Install Docker on ec2
+- name: Prepare runtime environment
   remote_user: ec2-user
   become: yes
-  hosts: aws_docker
+  #hosts: aws_docker
+  hosts: "{{ e_hosts | default('localhost') }}"
 
   tasks:
 
@@ -42,7 +43,7 @@
 - name: Deplpy weathercast on ec2
   remote_user: ec2-user
   become: no
-  hosts: aws_docker
+  hosts: "{{ e_hosts | default('localhost') }}"
 
   tasks:
 
@@ -83,6 +84,37 @@
       tags:
         - deploy_on_ec2
         - never 
+
+    - block:
+        - name: Restart services
+          community.docker.docker_compose:
+            project_src: "{{ ec2.remote_dir }}"
+            build: false
+            restarted: true
+          register: reg_docker_compose_restart
+          
+        - debug:
+            msg: "{{ reg_docker_compose_restart }}"
+      tags:
+        - restart_on_ec2
+        - never
+
+    - block:
+        - name: Rebuild services
+          community.docker.docker_compose:
+            project_src: "{{ ec2.remote_dir }}"
+            build: true
+          register: reg_docker_compose_rebuild
+          
+        - debug:
+            msg: "{{ reg_docker_compose_rebuild }}"
+
+      tags:
+        - rebuild_on_ec2
+        - neve
+
+    
+
 
     - block:
       - name: Docker compose down
