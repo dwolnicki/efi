@@ -1,8 +1,7 @@
 ---
 - name: Prepare runtime environment
-  remote_user: ec2-user
+  remote_user: "{{ e_user | default('ec2-user') }}"
   become: yes
-  #hosts: aws_docker
   hosts: "{{ e_hosts | default('localhost') }}"
 
   tasks:
@@ -41,7 +40,7 @@
 
 
 - name: Deplpy weathercast on ec2
-  remote_user: ec2-user
+  remote_user: "{{ e_user | default('ec2-user') }}"
   become: no
   hosts: "{{ e_hosts | default('localhost') }}"
 
@@ -61,16 +60,6 @@
           ansible.builtin.pip:
             name: docker-compose
 
-#        - name: Create directory
-#          ansible.builtin.file:
-#            path: "{{ ec2.remote_dir }}"
-#            state: directory
-
-#        - name: Copy files
-#          ansible.builtin.copy:
-#            src: ../deploy/
-#            dest: /home/ec2-user/{{ ec2.remote_dir }}/
-
         - name: Sync deployment files
           ansible.posix.synchronize:
             src: ../deploy/
@@ -86,7 +75,6 @@
 
         - name: Docker compose up
           community.docker.docker_compose:
-            #project_src: "{{ ec2.remote_dir }}"
             project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
           register: reg_docker_compose_up
 
