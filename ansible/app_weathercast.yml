@@ -63,10 +63,18 @@
             path: "{{ ec2.remote_dir }}"
             state: directory
 
-        - name: Copy files
-          ansible.builtin.copy:
+#        - name: Copy files
+#          ansible.builtin.copy:
+#            src: ../deploy/
+#            dest: /home/ec2-user/{{ ec2.remote_dir }}/
+
+        - name: Sync deployment files
+          ansible.posix.synchronize:
             src: ../deploy/
-            dest: /home/ec2-user/{{ ec2.remote_dir }}/
+            dest: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}/
+            delete: yes
+            archive: no
+            recursive: yes
 
         - name: Create docker compose from template
           ansible.builtin.template:
@@ -111,16 +119,15 @@
 
       tags:
         - rebuild_on_ec2
-        - neve
-
-    
-
+        - never
 
     - block:
-      - name: Docker compose down
+      - name: Undeploy app
         community.docker.docker_compose:
           project_src: "{{ ec2.remote_dir }}"
           state: absent
+          remove_images: local
+          remove_volumes: true
         register: reg_docker_compose_down
       - debug:
           msg: "{{ reg_docker_compose_down }}"
