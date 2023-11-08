@@ -1,5 +1,11 @@
 
+frontend:
+  servicename: weatherapp_frontend
+  volname: weatherapp_frontend_storage
+
 backend:
+  servicename: weatherapp_backend
+  volname: weatherapp_backend_storage
   endpoint:
     FQDN: weathercast.dwolnicki.net
 

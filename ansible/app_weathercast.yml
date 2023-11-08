@@ -16,6 +16,11 @@
 
 #EXAMPLES of usage
 
+#Install runtime and deploy application on local machine
+#ansible-playbook -i ./inventory  ./app_weathercast.yml -t prepare_instance,deploy 
+
+#Undeploy application from remote instance defined under group name "aws_docker" in ./inventory file
+#ansible-playbook -i ./inventory ./app_weathercast.yml -t undeploy -e e_hosts=aws_docker
 
 
 ---
