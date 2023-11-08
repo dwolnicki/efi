@@ -21,7 +21,7 @@ services:
     environment:
       #- ENDPOINT=http://weatherapp_backend:9000/api
       - NODE_OPTIONS=--openssl-legacy-provider
-      - ENDPOINT=http://{{ backend.endpoint.FQDN }}:9000/api
+      - ENDPOINT=http://{{ FQDN }}:9000/api
     volumes:
       - app_frontend_storage:/app_frontend
 

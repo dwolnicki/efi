@@ -45,6 +45,9 @@
   become: no
   hosts: "{{ e_hosts | default('localhost') }}"
 
+  vars:
+    FQDN: "{{ e_FQDN | default(backend.endpoint.FQDN)}}"
+
   tasks:
 
     - name: Include vars
