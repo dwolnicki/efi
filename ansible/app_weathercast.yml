@@ -58,10 +58,10 @@
           ansible.builtin.pip:
             name: docker-compose
 
-        - name: Create directory
-          ansible.builtin.file:
-            path: "{{ ec2.remote_dir }}"
-            state: directory
+#        - name: Create directory
+#          ansible.builtin.file:
+#            path: "{{ ec2.remote_dir }}"
+#            state: directory
 
 #        - name: Copy files
 #          ansible.builtin.copy:
@@ -130,8 +130,15 @@
           remove_images: local
           remove_volumes: true
         register: reg_docker_compose_down
+
       - debug:
           msg: "{{ reg_docker_compose_down }}"
+
+      - name: Delete deploy directory
+        ansible.builtin.file:
+          path: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
+          state: absent
+          
       tags:
         - undeploy_from_ec2
         - never
