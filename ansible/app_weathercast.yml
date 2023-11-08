@@ -79,7 +79,7 @@
         - name: Create docker compose from template
           ansible.builtin.template:
             src: templates/docker-compose.j2
-            dest: "{{ ec2.remote_dir }}/docker-compose.yaml"
+            dest: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}/docker-compose.yaml
 
         - name: Docker compose up
           community.docker.docker_compose:
