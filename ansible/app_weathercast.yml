@@ -83,7 +83,8 @@
 
         - name: Docker compose up
           community.docker.docker_compose:
-            project_src: "{{ ec2.remote_dir }}"
+            #project_src: "{{ ec2.remote_dir }}"
+            project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
           register: reg_docker_compose_up
 
         - debug:
@@ -96,7 +97,7 @@
     - block:
         - name: Restart services
           community.docker.docker_compose:
-            project_src: "{{ ec2.remote_dir }}"
+            project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
             build: false
             restarted: true
           register: reg_docker_compose_restart
@@ -110,7 +111,7 @@
     - block:
         - name: Rebuild services
           community.docker.docker_compose:
-            project_src: "{{ ec2.remote_dir }}"
+            project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
             build: true
           register: reg_docker_compose_rebuild
           
@@ -124,7 +125,7 @@
     - block:
       - name: Undeploy app
         community.docker.docker_compose:
-          project_src: "{{ ec2.remote_dir }}"
+          project_src: /home/{{ ansible_user_id }}/{{ ec2.remote_dir }}
           state: absent
           remove_images: local
           remove_volumes: true
