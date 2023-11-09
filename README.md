@@ -6,7 +6,7 @@ Application is avaiable under URL: http://weathercast.dwolnicki.net:8000/
 ### Prerequisites
 
 Application is based on docker containers.
-The runtime environment preparation and application management (deployment/undeployment/restart) can be perform using **ansible** playbook - so thre is a need to have ansible installed.
+The runtime environment preparation and application management (deployment/undeployment/restart) can be perform using **ansible** playbook - so there is a need to have ansible installed.
 Prepared release procedure was tested on AmazonLinux2023 (https://github.com/amazonlinux/amazon-linux-2023) 
 
 ### Deployment
@@ -23,7 +23,7 @@ ansible-playbook -i ./inventory ./app_weathercast.yml -t prepare_instance,deploy
 ```
 ### Undeployment
 
-* Undeplpy from local machine
+* Undeploy from local machine
 ```bash
 cd ansible
 ansible-playbook -i ./inventory ./app_weathercast.yml -t udeploy
