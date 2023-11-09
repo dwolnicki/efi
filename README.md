@@ -54,7 +54,7 @@ ansible-playbook -i ./inventory ./app_weathercast.yml -t restart -e e_hosts=aws_
 -t undeploy - undeploy the application
 ```
 
-### External vaiable avaialbe for ansible playbook
+### External variables available for ansible playbook
 ```
 -e e_user=value - define the username (system account) used during deployment (ec2-user - default value)
 -e e_hosts=value - name the of host group defined in inventory (localhost - default value)
