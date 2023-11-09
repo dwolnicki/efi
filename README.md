@@ -1,6 +1,6 @@
 ## Weatherapp
 
-Application is avaiable under URL: http://weathercast.dwolnicki.net:8000/
+Application is deployed in AWS and available under URL **http://weathercast.dwolnicki.net:8000/**
 
 
 ### Prerequisites
