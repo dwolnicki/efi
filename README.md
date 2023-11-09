@@ -6,7 +6,7 @@ Application is deployed in AWS and available under URL **http://weathercast.dwol
 ### Prerequisites
 
 Application is based on docker containers.
-The runtime environment preparation and application management (deployment/undeployment/restart) can be perform using **ansible** playbook - so there is a need to have ansible installed.
+The runtime environment preparation and application management (deployment/undeployment/restart) can be perform using **ansible** playbook - so there is a need to have ansible installed locally.
 Prepared release procedure was tested on AmazonLinux2023 (https://github.com/amazonlinux/amazon-linux-2023) 
 
 ### Deployment
