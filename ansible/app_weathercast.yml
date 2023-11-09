@@ -20,7 +20,7 @@
 #ansible-playbook -i ./inventory  ./app_weathercast.yml -t prepare_instance,deploy 
 
 #Undeploy application from remote instance defined under group name "aws_docker" in ./inventory file
-#ansible-playbook -i ./inventory ./app_weathercast.yml -t undeploy -e e_hosts=aws_docker
+#ansible-playbook -i ./inventory ./app_weathercast.yml -t undeploy -e e_hosts=aws_docker --key path_to_private_ssh_key
 
 
 ---
